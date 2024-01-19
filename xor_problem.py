@@ -69,13 +69,20 @@ def xor_test(test_data):
     output_layer_input_test = np.dot(hidden_layer_output_test, weights_hidden_output) + bias_output
     predicted_output_test = sigmoid(output_layer_input_test)
 
-    print("Wynik dla danych testowych", data_1, ":", predicted_output_test)
+    return predicted_output_test
 
 data_1 = np.array([[0, 0]])
 xor_test(data_1)
+print("Wynik dla danych testowych", data_1, ":", xor_test(data_1))
+
 data_1 = np.array([[1, 0]])
 xor_test(data_1)
+print("Wynik dla danych testowych", data_1, ":", xor_test(data_1))
+
 data_1 = np.array([[0, 1]])
 xor_test(data_1)
+print("Wynik dla danych testowych", data_1, ":", xor_test(data_1))
+
 data_1 = np.array([[1, 1]])
 xor_test(data_1)
+print("Wynik dla danych testowych", data_1, ":", xor_test(data_1))
