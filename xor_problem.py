@@ -62,12 +62,20 @@ for epoch in range(epochs):
 
 # Testowanie na przykładzie danych - po zakonczeniu treningu sieci testujemy jej dzialanie podajac
 # na jej wejscie konkretny przypadek do rozwiazania.
-test_data = np.array([[0, 1]])
+def xor_test(test_data):
+    hidden_layer_input_test = np.dot(test_data, weights_input_hidden) + bias_hidden
+    hidden_layer_output_test = sigmoid(hidden_layer_input_test)
 
-hidden_layer_input_test = np.dot(test_data, weights_input_hidden) + bias_hidden
-hidden_layer_output_test = sigmoid(hidden_layer_input_test)
+    output_layer_input_test = np.dot(hidden_layer_output_test, weights_hidden_output) + bias_output
+    predicted_output_test = sigmoid(output_layer_input_test)
 
-output_layer_input_test = np.dot(hidden_layer_output_test, weights_hidden_output) + bias_output
-predicted_output_test = sigmoid(output_layer_input_test)
+    print("Wynik dla danych testowych", data_1, ":", predicted_output_test)
 
-print("Wynik dla danych testowych:", predicted_output_test)
+data_1 = np.array([[0, 0]])
+xor_test(data_1)
+data_1 = np.array([[1, 0]])
+xor_test(data_1)
+data_1 = np.array([[0, 1]])
+xor_test(data_1)
+data_1 = np.array([[1, 1]])
+xor_test(data_1)
