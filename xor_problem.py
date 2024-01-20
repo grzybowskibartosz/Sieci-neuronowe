@@ -10,11 +10,17 @@ outputs = np.array([[0], [1], [1], [0]])
 mse_values = []
 weights_hidden_output_history = []
 weights_input_hidden_history = []
+classification_error_values = []
+
+end_of_training = True
+requested_error = 0.01
+
 
 # Inicjalizacja wag i obciążeń
 input_size = 2
 hidden_units = 2
 output_size = 1
+#epoch = 0
 
 # Tworzymy wagi wypelnione losowymi wartosciami
 weights_input_hidden = np.random.rand(input_size, hidden_units)
@@ -35,7 +41,7 @@ def sigmoid(x):
 epochs = 20000
 
 # Parametr ten okresla jak duzy wplyw ma wyliczony blad na 
-learning_rate = 0.01
+learning_rate = 0.05
 
 for epoch in range(epochs):
     # Feedforward - przekazywanie w przod
@@ -51,6 +57,14 @@ for epoch in range(epochs):
     # Obliczenie błędu - jest to roznica miedzy przewidywanym wyjsciem, a wyjsciem rzeczywistym (outputs)
     error = outputs - predicted_output
 
+    classification_error = np.mean(np.abs(np.round(predicted_output)-outputs))
+
+    if end_of_training and classification_error <= requested_error:
+        print(f"\nZakończono uczenie po epoce {epoch + 1} z powodu osiągnięcia zadanego błędu poniżej {requested_error}")
+        break
+
+    classification_error_values.append(classification_error)
+
     mse_values.append(np.mean((outputs - predicted_output)**2))
 
     # Backpropagation - wsteczne propagowanie bledu
@@ -60,7 +74,8 @@ for epoch in range(epochs):
     hidden_layer_error = np.dot(output_error, weights_hidden_output.T) * hidden_layer_output * (1 - hidden_layer_output)
 
     # Aktualizacja wag i obciążeń - tutaj aktualizujemy wagi oraz bociazenia za pomoca 
-    # gradientu i wspolczynnika uczenia (learning_rate).
+    # gradientu i wspolczynnika uczenia (learning_rate). W tym miejscu tworzym historię wag dodając przed zaktualizowaniem wag ich wartosc do tabeli. Potem aktualizujemy wagi.
+
     weights_hidden_output_history.append(np.copy(weights_hidden_output))
     weights_hidden_output += np.dot(hidden_layer_output.T, output_error) * learning_rate
     bias_output += np.sum(output_error, axis=0, keepdims=True) * learning_rate
@@ -72,19 +87,25 @@ for epoch in range(epochs):
 weights_hidden_output_history = np.array(weights_hidden_output_history)
 weights_input_hidden_history = np.array(weights_input_hidden_history)
 
+plt.plot(range(epoch), classification_error_values)
+plt.xlabel("Epoki")
+plt.ylabel("Błąd klasyfikacji")
+plt.title("Zmiana błędu klasyfikacji w czasie")
+plt.show()
+
 plt.figure(figsize=(12, 6))
 
 plt.subplot(1, 2, 1)
-plt.plot(range(epochs), weights_input_hidden_history[:, 0, 0], label='Waga 1,1')
-plt.plot(range(epochs), weights_input_hidden_history[:, 0, 1], label='Waga 1,2')
+plt.plot(range(epoch), weights_input_hidden_history[:, 0, 0], label='Waga 1,1')
+plt.plot(range(epoch), weights_input_hidden_history[:, 0, 1], label='Waga 1,2')
 plt.xlabel('Epoki')
 plt.ylabel('Wartość wagi')
 plt.title('Zmiana wag dla warstwy input-hidden')
 plt.legend()
 
 plt.subplot(1, 2, 2)
-plt.plot(range(epochs), weights_hidden_output_history[:, 0, 0], label='Waga 1,1')
-plt.plot(range(epochs), weights_hidden_output_history[:, 1, 0], label='Waga 2,1')
+plt.plot(range(epoch), weights_hidden_output_history[:, 0, 0], label='Waga 1,1')
+plt.plot(range(epoch), weights_hidden_output_history[:, 1, 0], label='Waga 2,1')
 plt.xlabel('Epoki')
 plt.ylabel('Wartość wagi')
 plt.title('Zmiana wag dla warstwy hidden-output')
@@ -93,7 +114,7 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-plt.plot(range(epochs), mse_values)
+plt.plot(range(epoch), mse_values)
 plt.xlabel("Epoki")
 plt.ylabel("MSE")
 plt.show()
@@ -114,7 +135,7 @@ def xor_test(test_data):
 
 data_1 = np.array([[1, 0]])
 xor_test(data_1)
-print("Wynik dla danych testowych", data_1, ":", xor_test(data_1))
+print("Wynik dla danych testowych", data_1, ":", xor_test(data_1), "\n")
 
 # data_1 = np.array([[0, 1]])
 # xor_test(data_1)
