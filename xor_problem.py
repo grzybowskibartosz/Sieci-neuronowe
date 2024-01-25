@@ -32,7 +32,7 @@ def sigmoid(x):
 # Rozpoczynamy w tym miejscu trening ktory bedzie trwal okreslona liczbe
 # epok (iteracji). Przy kazdej epoce przechodzimy raz przez caly zestaw 
 # danych treningowych.
-epochs = 20000
+epochs = 200000
 
 # Parametr ten okresla jak duzy wplyw ma wyliczony blad na 
 learning_rate = 0.01
@@ -112,7 +112,7 @@ def xor_test(test_data):
 # xor_test(data_1)
 # print("Wynik dla danych testowych", data_1, ":", xor_test(data_1))
 
-data_1 = np.array([[1, 0]])
+data_1 = np.array([[1, 1]])
 xor_test(data_1)
 print("Wynik dla danych testowych", data_1, ":", xor_test(data_1))
 
