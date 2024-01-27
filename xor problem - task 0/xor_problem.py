@@ -34,7 +34,7 @@ bias_output = np.zeros((1, output_size))
 prev_delta_weights_input_hidden = np.zeros_like(weights_input_hidden)
 prev_delta_weights_hidden_output = np.zeros_like(weights_hidden_output)
 
-rho = 0.9
+rho = 0.8
 
 # Funkcja aktywacji (sigmoid)
 def sigmoid(x):
@@ -44,7 +44,7 @@ def sigmoid(x):
 # Rozpoczynamy w tym miejscu trening ktory bedzie trwal okreslona liczbe
 # epok (iteracji). Przy kazdej epoce przechodzimy raz przez caly zestaw 
 # danych treningowych.
-epochs = 200000
+epochs = 50000
 
 # Parametr ten okresla jak duzy wplyw ma wyliczony blad na aktualne wagi
 learning_rate = 0.05
